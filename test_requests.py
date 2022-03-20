@@ -88,7 +88,7 @@ class TestRequests(object):
 
 
 if __name__ == '__main__':
-    req = TestRequests('requests.log')
+    req = TestRequests('./requests/requests.log')
     # req.test_cookies()
     # req.test_get()
     # req.test_post()
