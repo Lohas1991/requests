@@ -5,23 +5,24 @@ import logging
 import urllib3
 import jsonpath
 from hamcrest import *
+import logging
 # 解决“Unverified HTTPS request is being made to host '127.0.0.1'”问题
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 class TestRequests(object):
-    def __init__(self, filename):
+    def setup_method(self):
+        # logging.basicConfig(filename='requestsfile\req.log', level=logging.DEBUG)
+        self.filename='req.log'
         self.logger = logging.getLogger("requests")
         self.logger.setLevel(logging.DEBUG)
         # 格式设置
-        fmt = logging.Formatter(
-            "[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s")
-        # logging.basicConfig(filename="req.log")
+        fmt = logging.Formatter("[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s")
         # 文件方式处理
-        fh = logging.FileHandler(filename)
+        fh = logging.FileHandler(self.filename)
         # fh=logging.StreamHandler(filename)
         fh.setFormatter(fmt)
-        fh.setLevel(logging.DEBUG)
+        # fh.setLevel(logging.DEBUG)
         self.logger.addHandler(fh)
 
     def test_get(self):
@@ -34,14 +35,14 @@ class TestRequests(object):
                          verify=False)
         # logging.info(r)
         # logging.info(r.text)
-        # logging.info(json.dumps(r.json(),indent=2))
+        # logging.info(json.dumps(r.json(), indent=2))
         self.logger.info(r)
         self.logger.info(r.text)
         self.logger.info(json.dumps(r.json(), indent=2))
 
     def test_post(self):
         self.url = "https://testerhome.com/api/v3/topics.json?limit=2"
-        r = requests.post(self.url, data={'a': 1, 'b': 'string content'},  # post方法是data
+        r = requests.post(self.url, data={'a': "1", 'b': 'string content'},  # post方法是data
                           headers={"c": "3", "d": "int"},
                           proxies={"http": 'http://127.0.0.1:8888',
                                    "https": 'http://127.0.0.1:8888'},
@@ -53,10 +54,10 @@ class TestRequests(object):
     def test_cookies(self):
         self.url = "https://testerhome.com/api/v3/topics.json?limit=2"
         r = requests.get(self.url,
-                         params={"a": 1, "b": "string content"},
+                         params={"a": "1", "b": "string content"},
                          proxies={"http": 'http://127.0.0.1:8888',
                                   "https": 'http://127.0.0.1:8888'},
-                         cookies={"a": 1, "b": "string content"},
+                         cookies={"a": "1", "b": "string content"},
                          verify=False)
         self.logger.info(r.text)
 
@@ -86,11 +87,9 @@ class TestRequests(object):
         assert_that(['a', 'b', 'c'], all_of(
             has_items('d', 'a'), has_items('a', 'b')))
 
+    def teardown_method(self):
+        pass
 
-if __name__ == '__main__':
-    req = TestRequests('./requests/requests.log')
-    # req.test_cookies()
-    # req.test_get()
-    # req.test_post()
-    req.test_xueqiu_quote()
-    # req.test_hamcrest()
+# if __name__ == '__main__':
+#     req = Test_Requests('./requests/req.log')
+#     req.test_get()
