@@ -3,7 +3,7 @@
 @文件:test_httpbin.py
 @说明:
 @时间:2022/03/20 21:40:17
-@作者:hunaifeng
+@作者:
 @版本:1.0
 '''
 import pytest
