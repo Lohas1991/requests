@@ -19,7 +19,7 @@ class TestRequests(object):
         # 格式设置
         fmt = logging.Formatter("[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s")
         # 文件方式处理
-        fh = logging.FileHandler(self.filename)
+        fh = logging.FileHandler('./requestsfile/'+self.filename)
         # fh=logging.StreamHandler(filename)
         fh.setFormatter(fmt)
         # fh.setLevel(logging.DEBUG)
@@ -54,7 +54,7 @@ class TestRequests(object):
     def test_cookies(self):
         self.url = "https://testerhome.com/api/v3/topics.json?limit=2"
         r = requests.get(self.url,
-                         params={"a": "1", "b": "string content"},
+                         params={"a": "params_a", "b": "params_b"},
                          proxies={"http": 'http://127.0.0.1:8888',
                                   "https": 'http://127.0.0.1:8888'},
                          cookies={"a": "1", "b": "string content"},
@@ -73,8 +73,9 @@ class TestRequests(object):
                          cookies=self.cookies,
                          verify=False)
         self.logger.info(json.dumps(r.json(), indent=4))
-        #assert r.json()['data'][0]['guests'][0]['id'] == 224
-        # print(jsonpath.jsonpath(r.json(),'$.data[0].symbol'))
+        assert r.json()['data'][0]['guests'][0]['id'] == 132
+        assert r.json()['data'][1]['duration'] == 2696
+        # print(jsonpath.(r.json(),'$.data[0].symbol'))
         print(jsonpath.jsonpath(r.json(), '$.data[0].guests[0].id'))
         # print(jsonpath.jsonpath(r.json(),"$.data[0].guests[0][?(@.id=='287')]"))
         assert_that(0.1*0.1, close_to(0.01, 0.000001))

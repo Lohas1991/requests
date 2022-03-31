@@ -1,0 +1,31 @@
+{ "store": {
+    "book": [ 
+      { "category": "文学作品",
+        "author": "钱钟书",
+        "title": "围城",
+        "price": 80.5
+      },
+      { "category": "历史作品",
+        "author": "孔子",
+        "title": "春秋",
+        "price": 90.9
+      },
+      { "category": "天文作品",
+        "author": "天文",
+        "title": "史上最强仙人",
+        "isbn": "0-553-21311-3",
+        "price": 80.9
+      },
+      { "category": "fiction",
+        "author": "J. R. R. Tolkien",
+        "title": "The Lord of the Rings",
+        "isbn": "0-395-19395-8",
+        "price": 22.99
+      }
+    ],
+    "bicycle": {
+      "color": "red",
+      "price": 19.95
+    }
+  }
+}
