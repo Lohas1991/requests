@@ -13,7 +13,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 class TestRequests(object):
     def setup_method(self):
         # logging.basicConfig(filename='requestsfile\req.log', level=logging.DEBUG)
-        self.filename='req.log'
+        self.filename = 'req.log'
         self.logger = logging.getLogger("requests")
         self.logger.setLevel(logging.DEBUG)
         # 格式设置
@@ -73,24 +73,27 @@ class TestRequests(object):
                          cookies=self.cookies,
                          verify=False)
         self.logger.info(json.dumps(r.json(), indent=4))
-        assert r.json()['data'][0]['guests'][0]['id'] == 132
-        assert r.json()['data'][1]['duration'] == 2696
-        # print(jsonpath.(r.json(),'$.data[0].symbol'))
-        print(jsonpath.jsonpath(r.json(), '$.data[0].guests[0].id'))
-        # print(jsonpath.jsonpath(r.json(),"$.data[0].guests[0][?(@.id=='287')]"))
-        assert_that(0.1*0.1, close_to(0.01, 0.000001))
+        assert r.json()['data'][0]['guests'][0]['id'] == 956
+        assert r.json()['data'][1]['duration'] == 5417
+        self.logger.info(jsonpath.jsonpath(r.json(), '$.data[0].guests[0].id'))
+        self.logger.info(jsonpath.jsonpath(r.json(), "$.data[*].guests..[?(@.id==956)].name"))
 
     def test_hamcrest(self):
-        assert_that(0.1*0.1, close_to(0.01, 0.00000000000000002))
-        assert_that(["a", "b", "c"], has_item('a'))
+        assert_that(0.1*0.1, close_to(0.01, 0.00000000000000002), 'not close to')
+        # 列表包含一个元素
+        assert_that(["a", "b", "c"], has_item('d'), reason='not contains')
+        # 列表包含多个元素
+        assert_that(["a", "b", "c"], has_items('c','b'), reason='not contains')
+        # 任何一个匹配，就返回成功
         assert_that(['a', 'b', 'c'], any_of(
             has_items('d', 'a'), has_items('a', 'b')))
+        # 所有都匹配，才返回成功
         assert_that(['a', 'b', 'c'], all_of(
-            has_items('d', 'a'), has_items('a', 'b')))
+            has_items('c', 'a'), has_items('a', 'b')), reason='not all contains')
+        # equal_to
+        assert_that(10, equal_to(11), reason='two numbers not equal')
 
     def teardown_method(self):
         pass
 
-# if __name__ == '__main__':
-#     req = Test_Requests('./requests/req.log')
-#     req.test_get()
+

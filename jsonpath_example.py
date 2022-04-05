@@ -27,13 +27,15 @@ print("store_element:%s\n" %store_element)
 prices=jsonpath.jsonpath(obj, '$.store.*..price')
 print("prices:%s\n" %prices)
 
-# 获取第三本书
+# 获取第三本书，也可以写成$.store.book[:2]或者$.store.book[0,1]
 thirdbook=jsonpath.jsonpath(obj, '$.store.book[2]')
 print("thirdbook:%s\n" %thirdbook)
 
-# 获取最后一本书
-lastbook=jsonpath.jsonpath(obj, "$.store.book[(@.length-1)]")
-print("lastbook:%s\n" %lastbook)
+# 获取最后一本书,也可以写成$.store.book[-1:]
+lastbook1=jsonpath.jsonpath(obj, "$.store.book[(@.length-1)]")
+lastbook2=jsonpath.jsonpath(obj, "$.store.book[-1:]")
+print("lastbook1:%s\n" %lastbook1)
+print("lastbook2:%s\n" %lastbook2)
 
 # 获取前面的两本书
 book_1_2=jsonpath.jsonpath(obj, '$..book[0,1]')
